@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <Navigator />
+    <Navigator :theme="dark" />
     <Drawer />
-    <v-main> 
+    <v-main>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -17,11 +17,20 @@ import Drawer from "@/components/Drawer";
 export default {
   name: "App",
   components: {
-    Navigator,Drawer
+    Navigator,
+    Drawer,
   },
   data: () => ({
-    //
+    dark: undefined,
   }),
+  created() {
+    this.dark = localStorage.getItem("dark");
+    if (this.dark === null) {
+      this.dark = false;
+      localStorage.setItem("dark", false);
+    }
+    this.$vuetify.theme.dark = this.dark === true ? true : false;
+  },
 };
 </script>
 

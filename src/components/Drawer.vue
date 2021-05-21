@@ -5,7 +5,11 @@
     <v-divider></v-divider>
     <v-list>
       <v-list-item-group color="#26A69A" mandatory>
-        <v-list-item v-for="item in drawerList" :key="item.title" link>
+        <v-list-item
+          v-for="(item,index) in drawerList"
+          :key="index"
+          :to="{ name: item.name }"
+        >
           <v-list-item-title class="font-weight-bold">
             {{ item.title }}
           </v-list-item-title>
@@ -23,19 +27,19 @@ export default {
       img_dark: require("@/assets/Yunnet-dark.svg"),
       drawerShow: false,
       drawerList: [
-        { link: "/", title: "班表" },
-        { link: "/", title: "更改密碼" },
-        { link: "/", title: "後台" },
+        { name: "calendar", title: "班表" },
+        { name: "#", title: "個人頁面" },
+        { name: "#", title: "後台" },
       ],
     };
   },
   created() {
-    this.$bus.$on("changeDrawer", () => {
+    this.$bus.$on("changeDrawerStatus", () => {
       this.drawerShow = !this.drawerShow;
     });
   },
   beforeDestroy() {
-    this.$bus.off("changeDrawer");
+    this.$bus.off("changeDrawerStatus");
   },
 };
 </script>

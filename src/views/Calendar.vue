@@ -1,10 +1,16 @@
 <template>
   <v-row>
+    <!-- month picker -->
+    <v-dialog v-model="month_picker" width="300px">
+      <v-date-picker
+        type="month"
+        @change="pickMonth"
+        v-model="selected_month"
+      ></v-date-picker>
+    </v-dialog>
     <!-- Control button -->
     <v-col cols="12">
-      <v-btn @click="setToday" color="#43A047" outlined>
-        Today
-      </v-btn>
+      <v-btn @click="setToday" color="#43A047" outlined> Today </v-btn>
       <!-- prev -->
       <v-btn fab text small @click="prev">
         <v-icon> mdi-chevron-left </v-icon>
@@ -13,35 +19,50 @@
       <v-btn fab text small @click="next">
         <v-icon> mdi-chevron-right </v-icon>
       </v-btn>
+      <h2 class="calendar_date">{{ calendar_month }}月{{ calendar_year }}</h2>
+      <v-btn fab text small @click="month_picker = true">
+        <v-icon> mdi-calendar </v-icon>
+      </v-btn>
     </v-col>
     <!-- calender -->
     <v-col cols="12">
       <v-calendar
         ref="calendar"
         v-model="focus"
-        :start="formatNow"
-        @change="rnd"
+        :start="now"
+        @change="generateEvent"
         :events="events"
       ></v-calendar>
     </v-col>
+    <!-- shiftDialog -->
+    <ShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
   </v-row>
 </template>
 
 <script>
+import ShiftDialog from "@/components/ShiftDialog";
+
 export default {
+  components: {
+    ShiftDialog,
+  },
   data() {
     return {
       now: undefined,
       events: [],
-      focus: "",
+      focus: undefined,
+      calendar_month: undefined,
+      calendar_year: undefined,
+      month_picker: false,
+      selected_month: undefined,
+      showShiftDialog: false,
     };
   },
   methods: {
-    rnd({ start, end }) {
-      console.log(start);
-      console.log(end);
+    generateEvent({ start, end }) {
+      this.calendar_year = start.year;
+      this.calendar_month = start.month;
       let nowtDay = new Date(start.date);
-      // let endDay = new Date(end.date)
       const events = [];
       for (let day = start.day; day <= end.day; day++) {
         nowtDay.setDate(day);
@@ -62,17 +83,32 @@ export default {
       this.$refs.calendar.prev();
     },
     setToday() {
-      this.focus = "";
+      this.focus = this.now;
+      this.selected_month = `${this.now.getFullYear()}-${this.now.getMonth() + 1}`;
+    },
+    pickMonth() {
+      this.focus = `${this.selected_month}-01`;
     },
   },
-  computed: {
-    formatNow() {
-      const _now = this.now;
-      return `${_now.getFullYear()}-${_now.getMonth() + 1}-${_now.getDate()}`;
-    },
-  },
+  computed: {},
   created() {
     this.now = new Date(Date.now());
+    this.focus = this.now;
+    this.$bus.$on("showShiftDialog", () => {
+      this.showShiftDialog = true;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("showShiftDialog");
   },
 };
 </script>
+
+<style scoped>
+h2 {
+  display: inline-block;
+  margin-top: 10px;
+  position: relative;
+  top: 3px;
+}
+</style>

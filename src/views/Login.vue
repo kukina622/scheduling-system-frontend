@@ -51,8 +51,8 @@
 export default {
   data() {
     return {
-      UID:"",
-      password:"",
+      UID: "",
+      password: "",
       showPwd: false,
       rule: {
         required: (value) => !!value || "Required.",
