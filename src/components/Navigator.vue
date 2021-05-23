@@ -4,8 +4,10 @@
       <v-app-bar-nav-icon @click="showDrawer"></v-app-bar-nav-icon>
       <v-app-bar-title class="mt-1 ml-2">
         <router-link :to="{ name: 'calendar' }">
-          <img :src="img_dark" v-if="this.$vuetify.theme.dark" height="36px" />
-          <img :src="img_light" v-else height="36px" />
+          <img
+            :src="this.$vuetify.theme.dark ? img_dark : img_light"
+            height="36px"
+          />
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>

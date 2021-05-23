@@ -29,8 +29,8 @@
                   <v-select label="換班對象"></v-select>
                   <v-select outlined label="請選擇日期"></v-select>
                   <div>
-                    <v-btn large class="mr-2" color="#43a047">
-                      <span style="color: #ffffff">確定</span>
+                    <v-btn large class="mr-2 white--text" color="#43a047">
+                      確定
                     </v-btn>
                     <v-btn large class="ml-2" outlined color="#43a047">
                       重設
