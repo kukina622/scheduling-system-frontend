@@ -34,18 +34,12 @@
         :events="events"
       ></v-calendar>
     </v-col>
-    <!-- shiftDialog -->
-    <ShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
   </v-row>
 </template>
 
 <script>
-import ShiftDialog from "@/components/ShiftDialog";
 
 export default {
-  components: {
-    ShiftDialog,
-  },
   data() {
     return {
       now: undefined,
@@ -55,7 +49,6 @@ export default {
       calendar_year: undefined,
       month_picker: false,
       selected_month: undefined,
-      showShiftDialog: false,
     };
   },
   methods: {
@@ -94,12 +87,6 @@ export default {
   created() {
     this.now = new Date(Date.now());
     this.focus = this.now;
-    this.$bus.$on("showShiftDialog", () => {
-      this.showShiftDialog = true;
-    });
-  },
-  beforeDestroy() {
-    this.$bus.$off("showShiftDialog");
   },
 };
 </script>

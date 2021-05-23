@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // views
 import Login from "@/views/Login";
 import Calendar from "@/views/Calendar";
+import UserInfo from "@/views/UserInfo"
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ const routes = [
     name: "login",
     component:Login,
   },
+  {
+    path: "/userinfo",
+    name: "userinfo",
+    component:UserInfo,
+  }
 ];
 
 const router = new VueRouter({

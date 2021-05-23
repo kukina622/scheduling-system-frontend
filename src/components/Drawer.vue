@@ -6,9 +6,10 @@
     <v-list>
       <v-list-item-group color="#26A69A" mandatory>
         <v-list-item
-          v-for="(item,index) in drawerList"
-          :key="index"
+          v-for="item in drawerList"
+          :key="item.name"
           :to="{ name: item.name }"
+          exact
         >
           <v-list-item-title class="font-weight-bold">
             {{ item.title }}
@@ -28,8 +29,8 @@ export default {
       drawerShow: false,
       drawerList: [
         { name: "calendar", title: "班表" },
-        { name: "#", title: "個人頁面" },
-        { name: "#", title: "後台" },
+        { name: "userinfo", title: "個人頁面" },
+        { name: "login", title: "後台" },
       ],
     };
   },

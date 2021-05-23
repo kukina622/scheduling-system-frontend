@@ -2,21 +2,21 @@
   <v-app-bar app>
     <v-row align="center">
       <v-app-bar-nav-icon @click="showDrawer"></v-app-bar-nav-icon>
-      <v-col cols="2">
-        <router-link to="/">
-          <v-img :src="img_dark" v-if="this.$vuetify.theme.dark"></v-img>
-          <v-img :src="img_light" v-else></v-img>
+      <v-app-bar-title class="mt-1 ml-2">
+        <router-link :to="{ name: 'calendar' }">
+          <img :src="img_dark" v-if="this.$vuetify.theme.dark" height="36px" />
+          <img :src="img_light" v-else height="36px" />
         </router-link>
-      </v-col>
+      </v-app-bar-title>
       <v-spacer></v-spacer>
       <!-- theme control -->
-      <v-icon v-if="dark">mdi-weather-night</v-icon>
+      <v-icon v-if="$vuetify.theme.dark">mdi-weather-night</v-icon>
       <v-icon v-else color="#F57F17">mdi-weather-sunny</v-icon>
       <v-switch
         hide-details
         inset
         class="ml-2"
-        v-model="dark"
+        v-model="$vuetify.theme.dark"
         @change="changeTheme"
         color="#66BB6A"
       >
@@ -54,17 +54,10 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: {
-    dark: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       img_light: require("@/assets/Yunnet-light.svg"),
       img_dark: require("@/assets/Yunnet-dark.svg"),
-      show: true,
     };
   },
   methods: {
@@ -75,8 +68,7 @@ export default {
       this.$bus.$emit("showShiftDialog");
     },
     changeTheme() {
-      localStorage.setItem("dark", this.dark);
-      this.$vuetify.theme.dark = this.dark;
+      localStorage.setItem("dark", this.$vuetify.theme.dark);
     },
   },
   computed: {

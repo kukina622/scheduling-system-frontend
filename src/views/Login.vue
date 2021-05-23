@@ -1,7 +1,6 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="5">
-      <v-card class="mt-6" height="80vh" color="formcolor">
+      <v-card class="mt-6" color="formcolor" height="600px" width="620px">
         <v-row justify="center">
           <v-card-title class="text-h3 font-weight-black mb-9 ma-6"
             >Sign in
@@ -43,7 +42,6 @@
           </v-card-text>
         </v-row>
       </v-card>
-    </v-col>
   </v-row>
 </template>
 

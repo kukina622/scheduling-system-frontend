@@ -18,31 +18,30 @@
       <!-- content -->
       <v-container>
         <v-row justify="center" align="center">
-          <v-col cols="5">
-            <v-card height="80vh">
+          <v-col cols="auto">
+            <v-card height="600px" width="470px">
               <v-card-title>換班</v-card-title>
-              <div class="contentLayout">
-                <v-form>
-                <span class="self">test</span>
-                <v-select outlined label="請選擇日期"></v-select>
-                <v-icon x-large>mdi-swap-vertical-bold</v-icon>
-                <v-select label="換班對象"></v-select>
-                <v-select outlined label="請選擇日期"></v-select>
-                <div>
-                  <v-btn large class="mr-2" color="#43a047">
-                    <span style="color: #ffffff">確定</span>
-                  </v-btn>
-                  <v-btn large class="ml-2" outlined color="#43a047">
-                    重設
-                  </v-btn>
+              <v-form ref="form">
+                <div class="contentLayout">
+                  <span class="self">test</span>
+                  <v-select outlined label="請選擇日期"></v-select>
+                  <v-icon x-large>mdi-swap-vertical-bold</v-icon>
+                  <v-select label="換班對象"></v-select>
+                  <v-select outlined label="請選擇日期"></v-select>
+                  <div>
+                    <v-btn large class="mr-2" color="#43a047">
+                      <span style="color: #ffffff">確定</span>
+                    </v-btn>
+                    <v-btn large class="ml-2" outlined color="#43a047">
+                      重設
+                    </v-btn>
+                  </div>
                 </div>
-                </v-form>
-              </div>
-              
+              </v-form>
             </v-card>
           </v-col>
-          <v-col cols="5">
-            <v-card height="80vh">
+          <v-col cols="auto">
+            <v-card height="600px" width="470px">
               <v-card-title>已交換</v-card-title>
               <v-simple-table>
                 <thead>

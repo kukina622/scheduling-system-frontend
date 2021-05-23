@@ -1,10 +1,12 @@
 <template>
   <v-app>
-    <Navigator :theme="dark" />
+    <Navigator />
     <Drawer />
     <v-main>
       <v-container fluid>
         <router-view></router-view>
+        <!-- shiftDialog -->
+        <ShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
       </v-container>
     </v-main>
   </v-app>
@@ -13,23 +15,34 @@
 <script>
 import Navigator from "@/components/Navigator";
 import Drawer from "@/components/Drawer";
+import ShiftDialog from "@/components/ShiftDialog";
 
 export default {
   name: "App",
   components: {
     Navigator,
     Drawer,
+    ShiftDialog,
   },
   data: () => ({
-    dark: undefined,
+    darkInit: undefined,
+    showShiftDialog: false,
   }),
   created() {
-    this.dark = localStorage.getItem("dark");
-    if (this.dark === null) {
-      this.dark = false;
+    this.darkInit = JSON.parse(localStorage.getItem("dark"));
+    if (this.darkInit === null) {
+      this.darkInit = false;
       localStorage.setItem("dark", false);
     }
-    this.$vuetify.theme.dark = this.dark === true ? true : false;
+    this.darkInit = this.darkInit === true ? true : false;
+    this.$vuetify.theme.dark = this.darkInit;
+
+    this.$bus.$on("showShiftDialog", () => {
+      this.showShiftDialog = true;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("showShiftDialog");
   },
 };
 </script>
