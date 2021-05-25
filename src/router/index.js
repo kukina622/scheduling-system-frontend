@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Login from "@/views/Login";
 import Calendar from "@/views/Calendar";
 import UserInfo from "@/views/UserInfo"
+import Register from "@/views/Register"
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,11 @@ const routes = [
     path: "/",
     name: "calendar",
     component:Calendar,
+  },
+  {
+    path: "/register",
+    name: "register",
+    component:Register,
   },
   {
     path: "/login",

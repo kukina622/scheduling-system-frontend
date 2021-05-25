@@ -6,7 +6,7 @@
       <v-container fluid>
         <router-view></router-view>
         <!-- shiftDialog -->
-        <ShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
+        <ChangeShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
       </v-container>
     </v-main>
   </v-app>
@@ -15,14 +15,14 @@
 <script>
 import Navigator from "@/components/Navigator";
 import Drawer from "@/components/Drawer";
-import ShiftDialog from "@/components/ShiftDialog";
+import ChangeShiftDialog from "@/components/ChangeShiftDialog";
 
 export default {
   name: "App",
   components: {
     Navigator,
     Drawer,
-    ShiftDialog,
+    ChangeShiftDialog,
   },
   data: () => ({
     darkInit: undefined,

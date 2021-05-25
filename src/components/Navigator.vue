@@ -26,6 +26,15 @@
       <!-- button -->
       <template v-if="auth === 'guest'">
         <v-btn
+          class="mr-2 font-weight-bold"
+          outlined
+          color="#43A047"
+          tile
+          :to="{ name: 'register' }"
+        >
+          註冊
+        </v-btn>
+        <v-btn
           class="mr-5 font-weight-bold"
           outlined
           color="#43A047"

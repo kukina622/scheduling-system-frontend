@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     auth:"guest", //guest user admin
-    UID:"",
+    sid:"",
+    username:""
   },
   mutations: {},
   actions: {},

@@ -10,14 +10,14 @@
             <form @submit.prevent="submitForm">
               <v-row justify="center">
                 <v-col cols="8">
-                  <!-- username -->
-                  <validation-provider v-slot="{ errors }" rules="required|UIDformat">
+                  <!-- sid -->
+                  <validation-provider v-slot="{ errors }" rules="required|SIDformat">
                     <v-text-field
                       label="學號"
                       outlined
                       clearable
                       autofocus
-                      v-model="UID"
+                      v-model="sid"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -69,7 +69,7 @@ extend("required", {
   message: "Required!",
 });
 
-extend("UIDformat",value=>{
+extend("SIDformat",value=>{
   const re = new RegExp('^[A-z][0-9]{8}$')
   if (String(value).match(re)){
     return true
@@ -84,7 +84,7 @@ export default {
   },
   data() {
     return {
-      UID: "",
+      sid: "",
       password: "",
       showPwd: false,
     };

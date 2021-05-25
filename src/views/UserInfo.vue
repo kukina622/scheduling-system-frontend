@@ -29,7 +29,7 @@
           </v-col>
         </v-row>
         <v-card-actions class="d-flex justify-center mt-4">
-          <v-btn class="white--text" color="#43A047" @click="submitForm">送出</v-btn>
+          <v-btn class="white--text" color="#43A047" @click="submitShiftTime">送出</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -79,7 +79,7 @@
               </form>
             </validation-observer>
           </v-col>
-          <v-btn class="white--text" color="#43A047" @click="submitForm">確定</v-btn>
+          <v-btn class="white--text" color="#43A047" @click="submitChangePwd">確定</v-btn>
         </v-row>
       </v-card>
     </v-col>
@@ -118,7 +118,10 @@ export default {
     };
   },
   methods: {
-    submitForm(){
+    submitShiftTime(){
+
+    },
+    submitChangePwd(){
       this.$refs.observer.validate()
       .then(validated=>{
         console.log(validated)
