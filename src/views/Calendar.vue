@@ -38,7 +38,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -77,7 +76,9 @@ export default {
     },
     setToday() {
       this.focus = this.now;
-      this.selected_month = `${this.now.getFullYear()}-${this.now.getMonth() + 1}`;
+      this.selected_month = `${this.now.getFullYear()}-${
+        this.now.getMonth() + 1
+      }`;
     },
     pickMonth() {
       this.focus = `${this.selected_month}-01`;

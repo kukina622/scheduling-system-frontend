@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
           <validation-observer ref="observer">
-            <form @submit.prevent="submitForm">
+            <form>
               <v-row justify="center">
                 <v-col cols="8" class="pb-0">
                   <!-- username -->
@@ -80,7 +80,7 @@
                 </v-col>
                 <v-col cols="8">
                   <v-btn
-                    type="submit"
+                    @click="submitForm"
                     block
                     color="#43A047"
                     tile
@@ -134,7 +134,7 @@ export default {
       sid: "",
       username: "",
       password: "",
-      confirmPwd:"",
+      confirmPwd: "",
       showPwd: false,
       showPwd2: false,
     };
@@ -156,6 +156,3 @@ export default {
   font-family: "微軟正黑體" !important;
 }
 </style>
-
-
-

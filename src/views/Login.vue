@@ -7,11 +7,14 @@
         </v-card-title>
         <v-card-text>
           <validation-observer ref="observer">
-            <form @submit.prevent="submitForm">
+            <form>
               <v-row justify="center">
                 <v-col cols="8">
                   <!-- sid -->
-                  <validation-provider v-slot="{ errors }" rules="required|SIDformat">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    rules="required|SIDformat"
+                  >
                     <v-text-field
                       label="學號"
                       outlined
@@ -41,7 +44,7 @@
                 </v-col>
                 <v-col cols="8">
                   <v-btn
-                    type="submit"
+                    @click="submitForm"
                     block
                     color="#43A047"
                     tile
@@ -69,13 +72,13 @@ extend("required", {
   message: "Required!",
 });
 
-extend("SIDformat",value=>{
-  const re = new RegExp('^[A-z][0-9]{8}$')
-  if (String(value).match(re)){
-    return true
+extend("SIDformat", (value) => {
+  const re = new RegExp("^[A-z][0-9]{8}$");
+  if (String(value).match(re)) {
+    return true;
   }
-  return "Format wrong!!!"
-})
+  return "Format wrong!!!";
+});
 
 export default {
   components: {
@@ -91,10 +94,9 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$refs.observer.validate()
-      .then(validated=>{
-        if (validated){
-          console.log(true)
+      this.$refs.observer.validate().then((validated) => {
+        if (validated) {
+          console.log(true);
         }
       });
     },
@@ -107,6 +109,3 @@ export default {
   font-family: "微軟正黑體" !important;
 }
 </style>
-
-
-

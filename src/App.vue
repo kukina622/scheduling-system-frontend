@@ -6,7 +6,10 @@
       <v-container fluid>
         <router-view></router-view>
         <!-- shiftDialog -->
-        <ChangeShiftDialog :show="showShiftDialog" @close="showShiftDialog = false" />
+        <ChangeShiftDialog
+          :show="showShiftDialog"
+          @close="showShiftDialog = false"
+        />
       </v-container>
     </v-main>
   </v-app>
@@ -30,12 +33,9 @@ export default {
   }),
   created() {
     this.darkInit = JSON.parse(localStorage.getItem("dark"));
-    if (this.darkInit === null) {
-      this.darkInit = false;
-      localStorage.setItem("dark", false);
-    }
-    this.darkInit = this.darkInit === true ? true : false;
+    this.darkInit = this.darkInit || false;
     this.$vuetify.theme.dark = this.darkInit;
+    localStorage.setItem("dark", this.darkInit);
 
     this.$bus.$on("showShiftDialog", () => {
       this.showShiftDialog = true;
@@ -46,4 +46,3 @@ export default {
   },
 };
 </script>
-
