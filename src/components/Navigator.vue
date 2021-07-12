@@ -24,7 +24,7 @@
       >
       </v-switch>
       <!-- button -->
-      <template v-if="auth === 'guest'">
+      <template v-if="!isLogin">
         <v-btn
           class="mr-2 font-weight-bold"
           outlined
@@ -83,7 +83,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["auth"]),
+    ...mapState(["isLogin"]),
   },
 };
 </script>

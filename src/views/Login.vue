@@ -102,6 +102,7 @@ export default {
             .then((res) => {
               localStorage.setItem("sid", res.data.sid);
               localStorage.setItem("token", res.data.token);
+              this.$store.dispatch("getUserInfo")
               this.$router.push({ name: "calendar" });
             })
             .catch((err) => {

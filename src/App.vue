@@ -33,7 +33,7 @@ export default {
   }),
   created() {
     this.darkInit = JSON.parse(localStorage.getItem("dark"));
-    this.darkInit = this.darkInit || false;
+    this.darkInit = !!this.darkInit || false;
     this.$vuetify.theme.dark = this.darkInit;
     localStorage.setItem("dark", this.darkInit);
 
