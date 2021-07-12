@@ -6,6 +6,10 @@ const userRequest = axios.create({
   baseURL: `${endPoint}/user`,
 });
 
+const shiftTimeRequest = axios.create({
+  baseURL: `${endPoint}/shifttime`,
+});
+
 const loginRequest = axios.create({
   baseURL: `${endPoint}/login`,
 });
@@ -18,14 +22,24 @@ export const apiLogin = (data) => loginRequest.post("", data);
 export const apiRegister = (data) => registerRequest.post("", data);
 
 // 使用者相關
+export const apiGetUserInfo = (sid) => userRequest.get(`/${sid}`);
 
-/**
- * 取得使用者基本資料
- * @param {Object} payload - Api 設定.
- * @param {string} payload.sid - 使用者的學號.
- * @param {string} payload.token - JWT token.
- */
-export const apiGetUserInfo = (payload) =>
-  userRequest.get(`/${payload.sid}`, {
-    headers: { Authorization: `Bearer ${payload.token}` },
-  });
+// 換班相關
+export const apiGetAllUserShiftTime = () => shiftTimeRequest.get("/all");
+
+// 攔截器
+userRequest.interceptors.request.use((req) => {
+  let token = localStorage.getItem("token");
+  if (token) {
+    req.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return req;
+});
+
+shiftTimeRequest.interceptors.request.use((req) => {
+  let token = localStorage.getItem("token");
+  if (token) {
+    req.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return req;
+});

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { apiGetUserInfo } from "@/api";
+import { apiGetUserInfo, apiGetAllUserShiftTime } from "@/api";
 
 Vue.use(Vuex);
 
@@ -11,6 +11,7 @@ export default new Vuex.Store({
     shiftTime: [],
     isAdmin: false,
     isLogin: false,
+    allUserShiftTime: [],
   },
   mutations: {
     updateUserInfo(state, userInfo) {
@@ -20,13 +21,16 @@ export default new Vuex.Store({
       state.isAdmin = userInfo.isAdmin;
       state.isLogin = true;
     },
+    updateAllUserShiftTime(state, allUserShiftTime) {
+      state.allUserShiftTime = allUserShiftTime;
+    },
   },
   actions: {
     getUserInfo({ commit }) {
       const token = localStorage.getItem("token");
       const sid = localStorage.getItem("sid");
       const isAdmin = JSON.parse(atob(token.split(".")[1])).isAdmin;
-      apiGetUserInfo({ sid: sid, token: token })
+      apiGetUserInfo(sid)
         .then((res) => {
           let resData = res.data;
           commit("updateUserInfo", {
@@ -37,7 +41,17 @@ export default new Vuex.Store({
           });
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response.data.message);
+        });
+    },
+    getAllUserShiftTime({ commit }) {
+      apiGetAllUserShiftTime()
+        .then((res) => {
+          const allUserShiftTime = res.data.allUserShiftTime;
+          commit("updateAllUserShiftTime", allUserShiftTime);
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
         });
     },
   },
