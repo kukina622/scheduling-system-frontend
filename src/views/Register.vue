@@ -103,6 +103,8 @@
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
+import { apiRegister } from "@/api";
+
 extend("required", {
   ...required,
   message: "Required!",
@@ -143,7 +145,20 @@ export default {
     submitForm() {
       this.$refs.observer.validate().then((validated) => {
         if (validated) {
-          console.log(true);
+          apiRegister({
+            sid: this.sid,
+            password: this.password,
+            username: this.username,
+          })
+            .then(() => {
+              this.$router.push({ name: "login" });
+            })
+            .catch((err) => {
+              let errMessage = err.response.data.message;
+              if (errMessage === "SID_EXISTED") {
+                alert("學號已存在");
+              }
+            });
         }
       });
     },

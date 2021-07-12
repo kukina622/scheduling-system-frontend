@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 // views
 import Login from "@/views/Login";
 import Calendar from "@/views/Calendar";
-import UserInfo from "@/views/UserInfo"
-import Register from "@/views/Register"
+import UserInfo from "@/views/UserInfo";
+import Register from "@/views/Register";
 
 Vue.use(VueRouter);
 
@@ -12,23 +12,23 @@ const routes = [
   {
     path: "/",
     name: "calendar",
-    component:Calendar,
+    component: Calendar,
   },
   {
     path: "/register",
     name: "register",
-    component:Register,
+    component: Register,
   },
   {
     path: "/login",
     name: "login",
-    component:Login,
+    component: Login,
   },
   {
     path: "/userinfo",
     name: "userinfo",
-    component:UserInfo,
-  }
+    component: UserInfo,
+  },
 ];
 
 const router = new VueRouter({
