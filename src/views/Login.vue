@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
           <validation-observer ref="observer">
-            <form>
+            <form @keypress.enter="submitForm">
               <v-row justify="center">
                 <v-col cols="8">
                   <!-- sid -->
@@ -67,6 +67,8 @@
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
+import { apiLogin } from "@/api";
+
 extend("required", {
   ...required,
   message: "Required!",
@@ -96,7 +98,18 @@ export default {
     submitForm() {
       this.$refs.observer.validate().then((validated) => {
         if (validated) {
-          console.log(true);
+          apiLogin({ sid: this.sid, password: this.password })
+            .then((res) => {
+              localStorage.setItem("sid", res.data.sid);
+              localStorage.setItem("token", res.data.token);
+              this.$router.push({ name: "calendar" });
+            })
+            .catch((err) => {
+              let errMessage = err.response.data.message;
+              if (errMessage === "LOGIN_FAILED") {
+                alert("帳號或密碼錯誤");
+              }
+            });
         }
       });
     },

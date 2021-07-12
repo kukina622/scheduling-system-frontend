@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
           <validation-observer ref="observer">
-            <form>
+            <form @keypress.enter="submitForm">
               <v-row justify="center">
                 <v-col cols="8" class="pb-0">
                   <!-- username -->
