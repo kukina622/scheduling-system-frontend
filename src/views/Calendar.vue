@@ -65,6 +65,7 @@ export default {
         tmpDay.setDate(date);
         weekdayObj[tmpDay.getDay()].push(this.formatDate(tmpDay));
       }
+      // 建立班表(不包括換班)
       for (let eachUser of this.allUserShiftTime) {
         for (let shiftTime of eachUser.shiftTime) {
           weekdayObj[shiftTime].forEach((day) => {
@@ -74,6 +75,35 @@ export default {
             });
           });
         }
+      }
+      // 加入換班日期
+      for (let eachData of this.allShiftData) {
+        const shiftDate_1 = this.formatDate(new Date(eachData.shiftDate_1));
+        const shiftDate_2 = this.formatDate(new Date(eachData.shiftDate_2));
+        events.push({
+          name: eachData.user_1.username,
+          start: shiftDate_2,
+        });
+        events.push({
+          name: eachData.user_2.username,
+          start: shiftDate_1,
+        });
+      }
+      // 把原本值班時間刪掉
+      for (let eachData of this.allShiftData) {
+        let index;
+        const shiftDate_1 = this.formatDate(new Date(eachData.shiftDate_1));
+        const shiftDate_2 = this.formatDate(new Date(eachData.shiftDate_2));
+        const username_1 = eachData.user_1.username;
+        const username_2 = eachData.user_2.username;
+        index = events.findIndex(
+          (event) => event.name === username_1 && event.start === shiftDate_1
+        );
+        events.splice(index, 1);
+        index = events.findIndex(
+          (event) => event.name === username_2 && event.start === shiftDate_2
+        );
+        events.splice(index, 1);
       }
 
       this.events = events;
@@ -98,7 +128,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["allUserShiftTime"]),
+    ...mapState(["allUserShiftTime", "allShiftData"]),
   },
   created() {
     this.now = new Date(Date.now());

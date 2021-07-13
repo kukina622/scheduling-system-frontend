@@ -104,6 +104,7 @@ export default {
               localStorage.setItem("token", res.data.token);
               await this.$store.dispatch("getUserInfo");
               await this.$store.dispatch("getAllUserShiftTime");
+              await this.$store.dispatch("getAllShiftData");
               this.$router.push({ name: "calendar" });
             })
             .catch((err) => {

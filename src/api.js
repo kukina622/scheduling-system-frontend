@@ -30,6 +30,7 @@ export const apiChangePassword = (sid, data) =>
 export const apiGetAllUserShiftTime = () => shiftTimeRequest.get("/all");
 export const apiUpdateShiftTime = (sid, shiftTime) =>
   shiftTimeRequest.patch(`/${sid}`, shiftTime);
+export const apiGetAllShiftData = () => shiftTimeRequest.get("/all/shift");
 
 // 攔截器
 userRequest.interceptors.request.use((req) => {

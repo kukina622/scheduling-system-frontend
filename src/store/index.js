@@ -1,6 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { apiGetUserInfo, apiGetAllUserShiftTime } from "@/api";
+import {
+  apiGetUserInfo,
+  apiGetAllUserShiftTime,
+  apiGetAllShiftData,
+} from "@/api";
 
 Vue.use(Vuex);
 
@@ -11,7 +15,8 @@ export default new Vuex.Store({
     shiftTime: [],
     isAdmin: false,
     isLogin: false,
-    allUserShiftTime: [],
+    allUserShiftTime: [], //每個使用者的值班時間
+    allShiftData: [], //全部的換班資料
   },
   mutations: {
     updateUserInfo(state, userInfo) {
@@ -26,6 +31,9 @@ export default new Vuex.Store({
     },
     updateShiftTime(state, shiftTime) {
       state.shiftTime = shiftTime;
+    },
+    updateAllShiftData(state, allShiftData) {
+      state.allShiftData = allShiftData;
     },
   },
   actions: {
@@ -51,6 +59,15 @@ export default new Vuex.Store({
         let res = await apiGetAllUserShiftTime();
         const allUserShiftTime = res.data.allUserShiftTime;
         commit("updateAllUserShiftTime", allUserShiftTime);
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
+    },
+    async getAllShiftData({ commit }) {
+      try {
+        let res = await apiGetAllShiftData();
+        let allShiftData = res.data.allShiftData;
+        commit("updateAllShiftData", allShiftData);
       } catch (err) {
         console.log(err.response.data.message);
       }
