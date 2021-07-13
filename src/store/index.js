@@ -24,6 +24,9 @@ export default new Vuex.Store({
     updateAllUserShiftTime(state, allUserShiftTime) {
       state.allUserShiftTime = allUserShiftTime;
     },
+    updateShiftTime(state, shiftTime) {
+      state.shiftTime = shiftTime;
+    },
   },
   actions: {
     getUserInfo({ commit }) {

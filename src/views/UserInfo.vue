@@ -10,19 +10,15 @@
             <v-icon size="160">mdi-clipboard-account</v-icon>
           </v-col>
           <v-col class="d-flex flex-column" cols="auto">
-            <span class="sid">學號：B10923012</span>
-            <span class="name">姓名：test</span>
+            <span class="sid">學號：{{ sid }}</span>
+            <span class="name">姓名：{{ username }}</span>
             <span class="dutyTime">值班時間</span>
             <v-chip-group
-              v-model="value"
+              v-model="shiftTime"
               multiple
               active-class="teal--text text--lighten-1"
             >
-              <v-chip
-                v-for="(day, index) in week"
-                :key="day"
-                :value="index + 1"
-              >
+              <v-chip v-for="(day, index) in week" :key="day" :value="index">
                 {{ day }}
               </v-chip>
             </v-chip-group>
@@ -94,6 +90,10 @@
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
+import { mapState } from "vuex";
+
+import { apiUpdateShiftTime } from "@/api";
+
 extend("required", {
   ...required,
   message: "Required!",
@@ -114,20 +114,42 @@ export default {
   },
   data() {
     return {
-      week: ["一", "二", "三", "四", "五", "六", "日"],
-      value: undefined,
+      week: ["日", "一", "二", "三", "四", "五", "六"],
+      shiftTime: [],
       oldPwd: "",
       newPwd: "",
       confirmPwd: "",
     };
   },
   methods: {
-    submitShiftTime() {},
+    submitShiftTime() {
+      apiUpdateShiftTime(this.sid, { shiftTime: this.shiftTime })
+        .then(() => {
+          alert("更新成功");
+          this.$store.commit("updateShiftTime", this.shiftTime);
+        })
+        .catch((err) => {
+          let errMessage = err.response.data.message;
+          if (errMessage === "INVALID_FORMDATA") {
+            alert("資料錯誤");
+          }
+        });
+    },
     submitChangePwd() {
       this.$refs.observer.validate().then((validated) => {
         console.log(validated);
       });
     },
+  },
+  computed: {
+    ...mapState({
+      shiftTime_store: "shiftTime",
+      sid: "sid",
+      username: "username",
+    }),
+  },
+  created() {
+    this.shiftTime = this.shiftTime_store; //初始化值班時間
   },
 };
 </script>

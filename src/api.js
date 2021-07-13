@@ -26,6 +26,8 @@ export const apiGetUserInfo = (sid) => userRequest.get(`/${sid}`);
 
 // 換班相關
 export const apiGetAllUserShiftTime = () => shiftTimeRequest.get("/all");
+export const apiUpdateShiftTime = (sid, shiftTime) =>
+  shiftTimeRequest.patch(`/${sid}`, shiftTime);
 
 // 攔截器
 userRequest.interceptors.request.use((req) => {
