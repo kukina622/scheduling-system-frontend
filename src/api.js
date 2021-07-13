@@ -23,6 +23,8 @@ export const apiRegister = (data) => registerRequest.post("", data);
 
 // 使用者相關
 export const apiGetUserInfo = (sid) => userRequest.get(`/${sid}`);
+export const apiChangePassword = (sid, data) =>
+  userRequest.patch(`/${sid}/password`, data);
 
 // 換班相關
 export const apiGetAllUserShiftTime = () => shiftTimeRequest.get("/all");

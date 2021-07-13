@@ -40,13 +40,14 @@
         <v-row align="center" class="d-flex flex-column mt-8">
           <v-col cols="8">
             <validation-observer ref="observer">
-              <form>
+              <form @keypress.enter="submitChangePwd">
                 <validation-provider v-slot="{ errors }" rules="required">
                   <v-text-field
                     label="請輸入舊密碼"
                     outlined
                     :error-messages="errors"
                     v-model="oldPwd"
+                    type="password"
                   ></v-text-field>
                 </validation-provider>
 
@@ -60,6 +61,7 @@
                     outlined
                     :error-messages="errors"
                     v-model="newPwd"
+                    type="password"
                   ></v-text-field>
                 </validation-provider>
 
@@ -72,6 +74,7 @@
                     outlined
                     :error-messages="errors"
                     v-model="confirmPwd"
+                    type="password"
                   ></v-text-field>
                 </validation-provider>
               </form>
@@ -92,7 +95,7 @@ import { required } from "vee-validate/dist/rules";
 
 import { mapState } from "vuex";
 
-import { apiUpdateShiftTime } from "@/api";
+import { apiUpdateShiftTime, apiChangePassword } from "@/api";
 
 extend("required", {
   ...required,
@@ -137,8 +140,29 @@ export default {
     },
     submitChangePwd() {
       this.$refs.observer.validate().then((validated) => {
-        console.log(validated);
+        if (validated) {
+          apiChangePassword(this.sid, {
+            oldPassword: this.oldPwd,
+            newPassword: this.newPwd,
+          })
+            .then(() => {
+              alert("更改成功");
+              this.resetForm();
+            })
+            .catch((err) => {
+              let errMessage = err.response.data.message;
+              if (errMessage === "WRONG_PASSWORD") {
+                alert("密碼錯誤");
+              }
+            });
+        }
       });
+    },
+    resetForm() {
+      this.newPwd = "";
+      this.oldPwd = "";
+      this.confirmPwd = "";
+      this.$refs.observer.reset();
     },
   },
   computed: {
