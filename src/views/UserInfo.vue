@@ -127,8 +127,9 @@ export default {
   methods: {
     submitShiftTime() {
       apiUpdateShiftTime(this.sid, { shiftTime: this.shiftTime })
-        .then(() => {
+        .then(async () => {
           alert("更新成功");
+          await this.$store.dispatch("getAllUserShiftTime");
           this.$store.commit("updateShiftTime", this.shiftTime);
         })
         .catch((err) => {

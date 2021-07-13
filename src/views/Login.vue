@@ -99,11 +99,11 @@ export default {
       this.$refs.observer.validate().then((validated) => {
         if (validated) {
           apiLogin({ sid: this.sid, password: this.password })
-            .then((res) => {
+            .then(async (res) => {
               localStorage.setItem("sid", res.data.sid);
               localStorage.setItem("token", res.data.token);
-              this.$store.dispatch("getUserInfo");
-              this.$store.dispatch("getAllUserShiftTime");
+              await this.$store.dispatch("getUserInfo");
+              await this.$store.dispatch("getAllUserShiftTime");
               this.$router.push({ name: "calendar" });
             })
             .catch((err) => {

@@ -29,33 +29,31 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    getUserInfo({ commit }) {
+    async getUserInfo({ commit }) {
       const token = localStorage.getItem("token");
       const sid = localStorage.getItem("sid");
       const isAdmin = JSON.parse(atob(token.split(".")[1])).isAdmin;
-      apiGetUserInfo(sid)
-        .then((res) => {
-          let resData = res.data;
-          commit("updateUserInfo", {
-            sid: sid,
-            username: resData.username,
-            shiftTime: resData.shiftTime,
-            isAdmin: isAdmin,
-          });
-        })
-        .catch((err) => {
-          console.log(err.response.data.message);
+      try {
+        let res = await apiGetUserInfo(sid);
+        let resData = res.data;
+        commit("updateUserInfo", {
+          sid: sid,
+          username: resData.username,
+          shiftTime: resData.shiftTime,
+          isAdmin: isAdmin,
         });
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
     },
-    getAllUserShiftTime({ commit }) {
-      apiGetAllUserShiftTime()
-        .then((res) => {
-          const allUserShiftTime = res.data.allUserShiftTime;
-          commit("updateAllUserShiftTime", allUserShiftTime);
-        })
-        .catch((err) => {
-          console.log(err.response.data.message);
-        });
+    async getAllUserShiftTime({ commit }) {
+      try {
+        let res = await apiGetAllUserShiftTime();
+        const allUserShiftTime = res.data.allUserShiftTime;
+        commit("updateAllUserShiftTime", allUserShiftTime);
+      } catch (err) {
+        console.log(err.response.data.message);
+      }
     },
   },
   modules: {},

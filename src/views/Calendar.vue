@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -54,15 +56,26 @@ export default {
     generateEvent({ start, end }) {
       this.calendar_year = start.year;
       this.calendar_month = start.month;
-      let nowtDay = new Date(start.date);
-      const events = [];
-      for (let day = start.day; day <= end.day; day++) {
-        nowtDay.setDate(day);
-        events.push({
-          name: "",
-          start: this.formatDate(nowtDay),
-        });
+      let events = [];
+
+      //產生weekday的物件
+      let weekdayObj = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+      let tmpDay = new Date(start.date);
+      for (let date = start.day; date <= end.day; date++) {
+        tmpDay.setDate(date);
+        weekdayObj[tmpDay.getDay()].push(this.formatDate(tmpDay));
       }
+      for (let eachUser of this.allUserShiftTime) {
+        for (let shiftTime of eachUser.shiftTime) {
+          weekdayObj[shiftTime].forEach((day) => {
+            events.push({
+              name: eachUser.username,
+              start: day,
+            });
+          });
+        }
+      }
+
       this.events = events;
     },
     formatDate(date) {
@@ -84,7 +97,9 @@ export default {
       this.focus = `${this.selected_month}-01`;
     },
   },
-  computed: {},
+  computed: {
+    ...mapState(["allUserShiftTime"]),
+  },
   created() {
     this.now = new Date(Date.now());
     this.focus = this.now;
