@@ -6,7 +6,7 @@
     <v-list>
       <v-list-item-group color="#26A69A" mandatory>
         <v-list-item
-          v-for="item in drawerList"
+          v-for="item in authCheckDrawList"
           :key="item.name"
           :to="{ name: item.name }"
           exact
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -28,11 +30,24 @@ export default {
       img_dark: require("@/assets/Yunnet-dark.svg"),
       drawerShow: false,
       drawerList: [
-        { name: "calendar", title: "班表" },
-        { name: "userinfo", title: "個人頁面" },
-        { name: "login", title: "後台" },
+        { name: "calendar", title: "班表", isLogin: false, isAdmin: false },
+        { name: "userinfo", title: "個人頁面", isLogin: true, isAdmin: false },
+        { name: "login", title: "後台", isLogin: true, isAdmin: true },
       ],
     };
+  },
+  computed: {
+    ...mapState(["isLogin", "isAdmin"]),
+    authCheckDrawList() {
+      return this.drawerList.filter((n) => {
+        if (!n.isLogin || this.isLogin) {
+          if (!n.isAdmin || this.isAdmin) {
+            return true;
+          }
+        }
+        return false;
+      });
+    },
   },
   created() {
     this.$bus.$on("changeDrawerStatus", () => {
