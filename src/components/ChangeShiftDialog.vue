@@ -39,7 +39,7 @@
                   <v-select
                     outlined
                     label="請選擇日期"
-                    :items="generateShiftDate(selectedUserSid)"
+                    :items="generateShiftDate(findSidByUsername(selectedUser))"
                     v-model="selectedDate_Other"
                   ></v-select>
                   <div>
@@ -65,6 +65,7 @@
               </v-form>
             </v-card>
           </v-col>
+          <!-- 自己換班的列表 -->
           <v-col cols="auto">
             <v-card height="600px" width="470px">
               <v-card-title>已交換</v-card-title>
@@ -78,10 +79,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>2021-05-21(二)</td>
-                    <td>test</td>
-                    <td>2021-05-21(二)</td>
+                  <tr v-for="shiftData in tableShiftList" :key="shiftData._id">
+                    <td>
+                      {{ shiftData.orginalDate }}{{ shiftData.orginalDate_day }}
+                    </td>
+                    <td>{{ shiftData.target }}</td>
+                    <td>
+                      {{ shiftData.shiftDate }}{{ shiftData.shiftDate_day }}
+                    </td>
                     <td>
                       <v-btn color="error">
                         <v-icon>mdi-delete-forever</v-icon>
@@ -132,6 +137,8 @@ export default {
       let now = new Date();
       let end = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
       let result = [];
+
+      // 找出sid的資料
       let userData = this.allUserShiftTime.find(
         (userShiftData) => userShiftData.sid === sid
       );
@@ -197,6 +204,7 @@ export default {
         return ta < tb ? -1 : 1;
       });
     },
+    //找出有包括sid的換班資料
     containSidShiftData(sid) {
       const allShiftData = this.allShiftData;
       return allShiftData.filter(
@@ -211,7 +219,7 @@ export default {
     },
     submitForm() {
       const selectedDate_Self = this.selectedDate_Self;
-      const selectedUserSid = this.selectedUserSid;
+      const selectedUserSid = this.findSidByUsername(this.selectedUser);
       const selectedDate_Other = this.selectedDate_Other;
       if (!!selectedDate_Self && !!selectedUserSid && !!selectedDate_Other) {
         let data = {
@@ -236,6 +244,14 @@ export default {
           });
       }
     },
+    findSidByUsername(username) {
+      const selectedUserData = this.allUserShiftTime.find(
+        (userData) => userData.username === username
+      );
+      // undefined的情況
+      if (!selectedUserData) return "";
+      return selectedUserData.sid;
+    },
   },
   computed: {
     ...mapState([
@@ -252,13 +268,34 @@ export default {
       );
       return filterSelfUserData.map((userData) => userData.username);
     },
-    selectedUserSid() {
-      const selectedUserData = this.allUserShiftTime.find(
-        (userData) => userData.username === this.selectedUser
-      );
-      // undefined的情況
-      if (!selectedUserData) return "";
-      return selectedUserData.sid;
+    tableShiftList() {
+      // 找出有自己的換班資料
+      const SelfShiftData = this.containSidShiftData(this.sid);
+      let result = [];
+      for (let shiftData of SelfShiftData) {
+        let shiftdate_1 = new Date(shiftData.shiftDate_1);
+        let shiftdate_2 = new Date(shiftData.shiftDate_2);
+        if (shiftData.user_1.sid === this.sid) {
+          result.push({
+            orginalDate: this.formatDate(shiftdate_1),
+            target: shiftData.user_2.username,
+            shiftDate: this.formatDate(shiftdate_2),
+            orginalDate_day: `(${this.week[shiftdate_1.getDay()]})`,
+            shiftDate_day: `(${this.week[shiftdate_2.getDay()]})`,
+            _id: Symbol(),
+          });
+        } else {
+          result.push({
+            orginalDate: this.formatDate(shiftdate_2),
+            target: shiftData.user_1.username,
+            shiftDate: this.formatDate(shiftdate_1),
+            orginalDate_day: `(${this.week[shiftdate_2.getDay()]})`,
+            shiftDate_day: `(${this.week[shiftdate_1.getDay()]})`,
+            _id: Symbol(),
+          });
+        }
+      }
+      return result;
     },
   },
 };
