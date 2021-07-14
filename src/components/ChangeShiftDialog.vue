@@ -88,7 +88,7 @@
                       {{ shiftData.shiftDate }}{{ shiftData.shiftDate_day }}
                     </td>
                     <td>
-                      <v-btn color="error">
+                      <v-btn color="error" @click="deleteShift(shiftData)">
                         <v-icon>mdi-delete-forever</v-icon>
                       </v-btn>
                     </td>
@@ -106,7 +106,7 @@
 <script>
 import { mapState } from "vuex";
 
-import { apiChangeShift } from "@/api";
+import { apiChangeShift, apiDeleteShift } from "@/api";
 
 export default {
   props: {
@@ -251,6 +251,21 @@ export default {
       // undefined的情況
       if (!selectedUserData) return "";
       return selectedUserData.sid;
+    },
+    deleteShift(shiftData) {
+      let data = {
+        orginalDate: shiftData.orginalDate.replaceAll("/", "-"),
+        target: shiftData.target,
+        shiftDate: shiftData.shiftDate.replaceAll("/", "-"),
+      };
+      apiDeleteShift(this.sid, data)
+        .then(async () => {
+          alert("刪除成功");
+          await this.$store.dispatch("getAllShiftData");
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
     },
   },
   computed: {
