@@ -35,20 +35,23 @@ export default {
       const sid = localStorage.getItem("sid");
       const token = localStorage.getItem("token");
       if (!!sid && !!token) {
-        await this.$store.dispatch("getUserInfo");
-        await this.$store.dispatch("getAllUserShiftTime");
-        await this.$store.dispatch("getAllShiftData");
+        try {
+          await this.$store.dispatch("getUserInfo");
+          await this.$store.dispatch("getAllUserShiftTime");
+          await this.$store.dispatch("getAllShiftData");
+        } catch (err) {
+          this.$store.dispatch("errorHandler", err);
+        }
       }
     },
   },
   async created() {
     this.$vuetify.theme.dark = !!localStorage.getItem("dark") || false;
     localStorage.setItem("dark", this.$vuetify.theme.dark);
-
-    await this.autoLogin();
     this.$bus.$on("showShiftDialog", () => {
       this.showShiftDialog = true;
     });
+    await this.autoLogin();
   },
   beforeDestroy() {
     this.$bus.$off("showShiftDialog");

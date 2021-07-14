@@ -48,42 +48,30 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getUserInfo({ commit, dispatch }) {
+    async getUserInfo({ commit }) {
       const token = localStorage.getItem("token");
       const sid = localStorage.getItem("sid");
       const isAdmin = JSON.parse(atob(token.split(".")[1])).isAdmin;
-      try {
-        let res = await apiGetUserInfo(sid);
-        let resData = res.data;
-        commit("updateUserInfo", {
-          sid: sid,
-          username: resData.username,
-          shiftTime: resData.shiftTime,
-          isAdmin: isAdmin,
-        });
-      } catch (err) {
-        dispatch("errorHandler", err);
-      }
+      let res = await apiGetUserInfo(sid);
+      let resData = res.data;
+      commit("updateUserInfo", {
+        sid: sid,
+        username: resData.username,
+        shiftTime: resData.shiftTime,
+        isAdmin: isAdmin,
+      });
     },
-    async getAllUserShiftTime({ commit, dispatch }) {
-      try {
-        let res = await apiGetAllUserShiftTime();
-        const allUserShiftTime = res.data.allUserShiftTime;
-        commit("updateAllUserShiftTime", allUserShiftTime);
-      } catch (err) {
-        dispatch("errorHandler", err);
-      }
+    async getAllUserShiftTime({ commit }) {
+      let res = await apiGetAllUserShiftTime();
+      const allUserShiftTime = res.data.allUserShiftTime;
+      commit("updateAllUserShiftTime", allUserShiftTime);
     },
-    async getAllShiftData({ commit, dispatch }) {
-      try {
-        let res = await apiGetAllShiftData();
-        let allShiftData = res.data.allShiftData;
-        commit("updateAllShiftData", allShiftData);
-      } catch (err) {
-        dispatch("errorHandler", err);
-      }
+    async getAllShiftData({ commit }) {
+      let res = await apiGetAllShiftData();
+      let allShiftData = res.data.allShiftData;
+      commit("updateAllShiftData", allShiftData);
     },
-    errorHandler(context, err) {
+    errorHandler({ commit }, err) {
       let errMessage = err.response.data.message;
       switch (errMessage) {
         case "SID_EXISTED":
@@ -99,13 +87,19 @@ export default new Vuex.Store({
           alert("密碼錯誤");
           break;
         case "NO_PERMISSION":
+          commit("logout");
           alert("帳號無效");
           break;
         case "INVALID_TOKEN":
+          commit("logout");
           alert("帳號無效");
           break;
         case "UNKNOWN_USER":
           alert("未知的使用者");
+          break;
+        case "TOKEN_EXPIRED":
+          commit("logout");
+          alert("請重新登入");
           break;
       }
     },
