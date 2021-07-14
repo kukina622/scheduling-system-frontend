@@ -89,8 +89,8 @@ export default {
   },
   data() {
     return {
-      sid: "",
-      password: "",
+      sid: "b10923012",
+      password: "123",
       showPwd: false,
     };
   },

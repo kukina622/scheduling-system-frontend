@@ -99,11 +99,11 @@ export default {
         index = events.findIndex(
           (event) => event.name === username_1 && event.start === shiftDate_1
         );
-        events.splice(index, 1);
+        if (index > -1) events.splice(index, 1);
         index = events.findIndex(
           (event) => event.name === username_2 && event.start === shiftDate_2
         );
-        events.splice(index, 1);
+        if (index > -1) events.splice(index, 1);
       }
 
       this.events = events;
