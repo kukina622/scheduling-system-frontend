@@ -43,10 +43,21 @@
                     v-model="selectedDate_Other"
                   ></v-select>
                   <div>
-                    <v-btn large class="mr-2 white--text" color="#43a047">
+                    <v-btn
+                      large
+                      class="mr-2 white--text"
+                      color="#43a047"
+                      @click="submitForm"
+                    >
                       確定
                     </v-btn>
-                    <v-btn large class="ml-2" outlined color="#43a047">
+                    <v-btn
+                      large
+                      class="ml-2"
+                      outlined
+                      color="#43a047"
+                      @click="resetForm"
+                    >
                       重設
                     </v-btn>
                   </div>
@@ -89,6 +100,9 @@
 
 <script>
 import { mapState } from "vuex";
+
+import { apiChangeShift } from "@/api";
+
 export default {
   props: {
     show: {
@@ -189,6 +203,38 @@ export default {
         (shiftData) =>
           shiftData.user_1.sid === sid || shiftData.user_2.sid === sid
       );
+    },
+    resetForm() {
+      this.selectedDate_Self = "";
+      this.selectedUser = "";
+      this.selectedDate_Other = "";
+    },
+    submitForm() {
+      const selectedDate_Self = this.selectedDate_Self;
+      const selectedUserSid = this.selectedUserSid;
+      const selectedDate_Other = this.selectedDate_Other;
+      if (!!selectedDate_Self && !!selectedUserSid && !!selectedDate_Other) {
+        let data = {
+          orginalDate: selectedDate_Self
+            .substr(0, selectedDate_Self.length - 3)
+            .replaceAll("/", "-"),
+          target: selectedUserSid,
+          shiftDate: selectedDate_Other
+            .substr(0, selectedDate_Other.length - 3)
+            .replaceAll("/", "-"),
+        };
+        apiChangeShift(this.sid, data)
+          .then(async () => {
+            await this.$store.dispatch("getAllShiftData");
+            alert("換班成功");
+          })
+          .catch((err) => {
+            let errMessage = err.response.data.message;
+            if (errMessage === "UNKNOWN_USER") {
+              alert("未知的使用者");
+            }
+          });
+      }
     },
   },
   computed: {

@@ -50,12 +50,20 @@ export default {
       calendar_year: undefined,
       month_picker: false,
       selected_month: undefined,
+      calendarRange: {
+        start: undefined,
+        end: undefined,
+      },
     };
   },
   methods: {
     generateEvent({ start, end }) {
       this.calendar_year = start.year;
       this.calendar_month = start.month;
+
+      this.calendarRange.start = start;
+      this.calendarRange.end = end;
+
       let events = [];
 
       //產生weekday的物件
@@ -131,8 +139,13 @@ export default {
     ...mapState(["allUserShiftTime", "allShiftData"]),
   },
   created() {
-    this.now = new Date(Date.now());
+    this.now = new Date();
     this.focus = this.now;
+  },
+  watch: {
+    allShiftData() {
+      this.generateEvent(this.calendarRange);
+    },
   },
 };
 </script>

@@ -31,6 +31,8 @@ export const apiGetAllUserShiftTime = () => shiftTimeRequest.get("/all");
 export const apiUpdateShiftTime = (sid, shiftTime) =>
   shiftTimeRequest.patch(`/${sid}`, shiftTime);
 export const apiGetAllShiftData = () => shiftTimeRequest.get("/all/shift");
+export const apiChangeShift = (sid, data) =>
+  shiftTimeRequest.post(`/${sid}/shift`, data);
 
 // 攔截器
 userRequest.interceptors.request.use((req) => {
