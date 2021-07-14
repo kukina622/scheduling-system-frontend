@@ -28,7 +28,6 @@ export default {
     ChangeShiftDialog,
   },
   data: () => ({
-    darkInit: undefined,
     showShiftDialog: false,
   }),
   methods: {
@@ -43,10 +42,8 @@ export default {
     },
   },
   async created() {
-    this.darkInit = JSON.parse(localStorage.getItem("dark"));
-    this.darkInit = !!this.darkInit || false;
-    this.$vuetify.theme.dark = this.darkInit;
-    localStorage.setItem("dark", this.darkInit);
+    this.$vuetify.theme.dark = !!localStorage.getItem("dark") || false;
+    localStorage.setItem("dark", this.$vuetify.theme.dark);
 
     await this.autoLogin();
     this.$bus.$on("showShiftDialog", () => {
