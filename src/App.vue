@@ -31,12 +31,24 @@ export default {
     darkInit: undefined,
     showShiftDialog: false,
   }),
-  created() {
+  methods: {
+    async autoLogin() {
+      const sid = localStorage.getItem("sid");
+      const token = localStorage.getItem("token");
+      if (!!sid && !!token) {
+        await this.$store.dispatch("getUserInfo");
+        await this.$store.dispatch("getAllUserShiftTime");
+        await this.$store.dispatch("getAllShiftData");
+      }
+    },
+  },
+  async created() {
     this.darkInit = JSON.parse(localStorage.getItem("dark"));
     this.darkInit = !!this.darkInit || false;
     this.$vuetify.theme.dark = this.darkInit;
     localStorage.setItem("dark", this.darkInit);
 
+    await this.autoLogin();
     this.$bus.$on("showShiftDialog", () => {
       this.showShiftDialog = true;
     });
