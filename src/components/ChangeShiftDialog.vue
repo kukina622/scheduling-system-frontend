@@ -237,10 +237,7 @@ export default {
             alert("換班成功");
           })
           .catch((err) => {
-            let errMessage = err.response.data.message;
-            if (errMessage === "UNKNOWN_USER") {
-              alert("未知的使用者");
-            }
+            this.$store.dispatch("errorHandler", err);
           });
       }
     },
@@ -264,7 +261,7 @@ export default {
           await this.$store.dispatch("getAllShiftData");
         })
         .catch((err) => {
-          console.log(err.response.data.message);
+          this.$store.dispatch("errorHandler", err);
         });
     },
   },

@@ -154,10 +154,7 @@ export default {
               this.$router.push({ name: "login" });
             })
             .catch((err) => {
-              let errMessage = err.response.data.message;
-              if (errMessage === "SID_EXISTED") {
-                alert("學號已存在");
-              }
+              this.$store.dispatch("errorHandler", err);
             });
         }
       });

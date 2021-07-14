@@ -48,7 +48,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getUserInfo({ commit }) {
+    async getUserInfo({ commit, dispatch }) {
       const token = localStorage.getItem("token");
       const sid = localStorage.getItem("sid");
       const isAdmin = JSON.parse(atob(token.split(".")[1])).isAdmin;
@@ -62,25 +62,51 @@ export default new Vuex.Store({
           isAdmin: isAdmin,
         });
       } catch (err) {
-        console.log(err.response.data.message);
+        dispatch("errorHandler", err);
       }
     },
-    async getAllUserShiftTime({ commit }) {
+    async getAllUserShiftTime({ commit, dispatch }) {
       try {
         let res = await apiGetAllUserShiftTime();
         const allUserShiftTime = res.data.allUserShiftTime;
         commit("updateAllUserShiftTime", allUserShiftTime);
       } catch (err) {
-        console.log(err.response.data.message);
+        dispatch("errorHandler", err);
       }
     },
-    async getAllShiftData({ commit }) {
+    async getAllShiftData({ commit, dispatch }) {
       try {
         let res = await apiGetAllShiftData();
         let allShiftData = res.data.allShiftData;
         commit("updateAllShiftData", allShiftData);
       } catch (err) {
-        console.log(err.response.data.message);
+        dispatch("errorHandler", err);
+      }
+    },
+    errorHandler(context, err) {
+      let errMessage = err.response.data.message;
+      switch (errMessage) {
+        case "SID_EXISTED":
+          alert("帳號已存在");
+          break;
+        case "LOGIN_FAILED":
+          alert("登入失敗");
+          break;
+        case "INVALID_FORMDATA":
+          alert("表單格式錯誤");
+          break;
+        case "WRONG_PASSWORD":
+          alert("密碼錯誤");
+          break;
+        case "NO_PERMISSION":
+          alert("帳號無效");
+          break;
+        case "INVALID_TOKEN":
+          alert("帳號無效");
+          break;
+        case "UNKNOWN_USER":
+          alert("未知的使用者");
+          break;
       }
     },
   },

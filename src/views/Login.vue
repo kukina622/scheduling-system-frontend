@@ -108,10 +108,7 @@ export default {
               this.$router.push({ name: "calendar" });
             })
             .catch((err) => {
-              let errMessage = err.response.data.message;
-              if (errMessage === "LOGIN_FAILED") {
-                alert("帳號或密碼錯誤");
-              }
+              this.$store.dispatch("errorHandler", err);
             });
         }
       });

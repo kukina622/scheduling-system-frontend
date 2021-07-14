@@ -133,10 +133,7 @@ export default {
           this.$store.commit("updateShiftTime", this.shiftTime);
         })
         .catch((err) => {
-          let errMessage = err.response.data.message;
-          if (errMessage === "INVALID_FORMDATA") {
-            alert("資料錯誤");
-          }
+          this.$store.dispatch("errorHandler", err);
         });
     },
     submitChangePwd() {
@@ -151,10 +148,7 @@ export default {
               this.resetForm();
             })
             .catch((err) => {
-              let errMessage = err.response.data.message;
-              if (errMessage === "WRONG_PASSWORD") {
-                alert("密碼錯誤");
-              }
+              this.$store.dispatch("errorHandler", err);
             });
         }
       });
