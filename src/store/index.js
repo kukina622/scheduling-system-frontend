@@ -19,6 +19,17 @@ export default new Vuex.Store({
     allShiftData: [], //全部的換班資料
   },
   mutations: {
+    logout(state) {
+      localStorage.removeItem("sid");
+      localStorage.removeItem("token");
+      state.sid = "";
+      state.username = "";
+      state.shiftTime = [];
+      state.isAdmin = false;
+      state.isLogin = false;
+      state.allUserShiftTime = [];
+      state.allShiftData = [];
+    },
     updateUserInfo(state, userInfo) {
       state.sid = userInfo.sid;
       state.username = userInfo.username;

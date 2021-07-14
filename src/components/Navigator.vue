@@ -54,7 +54,13 @@
         >
           換班
         </v-btn>
-        <v-btn class="mr-5 font-weight-bold" outlined color="#43A047" tile>
+        <v-btn
+          class="mr-5 font-weight-bold"
+          outlined
+          color="#43A047"
+          tile
+          @click="logout"
+        >
           登出
         </v-btn>
       </template>
@@ -80,6 +86,10 @@ export default {
     },
     changeTheme() {
       localStorage.setItem("dark", this.$vuetify.theme.dark);
+    },
+    logout() {
+      this.$store.commit("logout");
+      alert("已登出");
     },
   },
   computed: {
