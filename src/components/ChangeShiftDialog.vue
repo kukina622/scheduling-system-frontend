@@ -88,7 +88,13 @@
                       {{ shiftData.shiftDate }}{{ shiftData.shiftDate_day }}
                     </td>
                     <td>
-                      <v-btn color="error" @click="deleteShift(shiftData)">
+                      <v-btn
+                        color="error"
+                        @click="
+                          willDeleteDate = shiftData;
+                          deleteDialog = true;
+                        "
+                      >
                         <v-icon>mdi-delete-forever</v-icon>
                       </v-btn>
                     </td>
@@ -100,6 +106,38 @@
         </v-row>
       </v-container>
     </v-card>
+    <!-- 刪除換班的對話框 -->
+    <v-dialog v-model="deleteDialog" width="500px">
+      <v-card>
+        <v-card-title>確認刪除?</v-card-title>
+        <v-card-text class="mt-4">
+          <p>
+            原值班日期：{{ willDeleteDate.orginalDate
+            }}{{ willDeleteDate.orginalDate_day }}
+          </p>
+          <p>換班對象：{{ willDeleteDate.target }}</p>
+          <p>
+            換班日期：{{ willDeleteDate.shiftDate
+            }}{{ willDeleteDate.shiftDate_day }}
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            @click="
+              deleteShift(willDeleteDate);
+              deleteDialog = false;
+            "
+          >
+            確定
+          </v-btn>
+          <v-btn color="green darken-1" outlined @click="deleteDialog = false">
+            取消
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-dialog>
 </template>
 
@@ -121,6 +159,15 @@ export default {
       selectedDate_Self: "",
       selectedUser: "",
       selectedDate_Other: "",
+      deleteDialog: false,
+      willDeleteDate: {
+        orginalDate: "",
+        target: "",
+        shiftDate: "",
+        orginalDate_day: "",
+        shiftDate_day: "",
+        _id: undefined,
+      },
     };
   },
   methods: {
