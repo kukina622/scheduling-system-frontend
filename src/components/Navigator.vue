@@ -2,13 +2,8 @@
   <v-app-bar app>
     <v-row align="center">
       <v-app-bar-nav-icon @click="showDrawer"></v-app-bar-nav-icon>
-      <v-app-bar-title class="mt-1 ml-2">
-        <router-link :to="{ name: 'calendar' }">
-          <img
-            :src="this.$vuetify.theme.dark ? img_dark : img_light"
-            height="36px"
-          />
-        </router-link>
+      <v-app-bar-title>
+        <router-link :to="{ name: 'calendar' }"> 值班系統 </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <!-- theme control -->
@@ -72,10 +67,7 @@
 import { mapState } from "vuex";
 export default {
   data() {
-    return {
-      img_light: require("@/assets/Yunnet-light.svg"),
-      img_dark: require("@/assets/Yunnet-dark.svg"),
-    };
+    return {};
   },
   methods: {
     showDrawer() {
@@ -102,3 +94,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.v-app-bar-title >>> a {
+  font-family: "微軟正黑體";
+  text-decoration: none;
+  color: inherit;
+}
+</style>
