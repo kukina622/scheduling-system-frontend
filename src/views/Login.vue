@@ -106,6 +106,12 @@ export default {
               await this.$store.dispatch("getAllUserShiftTime");
               await this.$store.dispatch("getAllShiftData");
               this.$router.push({ name: "calendar" });
+              this.$swal.fire({
+                icon: "success",
+                title: "登入成功",
+                showConfirmButton: false,
+                timer: 1000,
+              });
             })
             .catch((err) => {
               this.$store.dispatch("errorHandler", err);

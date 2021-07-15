@@ -151,6 +151,12 @@ export default {
             username: this.username,
           })
             .then(() => {
+              this.$swal.fire({
+                icon: "success",
+                title: "註冊成功",
+                showConfirmButton: false,
+                timer: 1000,
+              });
               this.$router.push({ name: "login" });
             })
             .catch((err) => {

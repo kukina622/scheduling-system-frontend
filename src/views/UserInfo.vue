@@ -128,7 +128,12 @@ export default {
     submitShiftTime() {
       apiUpdateShiftTime(this.sid, { shiftTime: this.shiftTime })
         .then(async () => {
-          alert("更新成功");
+          this.$swal.fire({
+            icon: "success",
+            title: "更新成功",
+            showConfirmButton: false,
+            timer: 1000,
+          });
           await this.$store.dispatch("getAllUserShiftTime");
           this.$store.commit("updateShiftTime", this.shiftTime);
         })
@@ -144,7 +149,12 @@ export default {
             newPassword: this.newPwd,
           })
             .then(() => {
-              alert("更改成功");
+              this.$swal.fire({
+                icon: "success",
+                title: "更改成功",
+                showConfirmButton: false,
+                timer: 1000,
+              });
               this.resetForm();
             })
             .catch((err) => {

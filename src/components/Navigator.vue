@@ -89,7 +89,12 @@ export default {
     },
     logout() {
       this.$store.commit("logout");
-      alert("已登出");
+      this.$swal.fire({
+        icon: "success",
+        title: "已登出",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     },
   },
   computed: {

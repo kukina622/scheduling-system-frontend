@@ -73,34 +73,43 @@ export default new Vuex.Store({
     },
     errorHandler({ commit }, err) {
       let errMessage = err.response.data.message;
+      let showMessage = undefined;
       switch (errMessage) {
         case "SID_EXISTED":
-          alert("帳號已存在");
+          showMessage = "帳號已存在";
           break;
         case "LOGIN_FAILED":
-          alert("登入失敗");
+          showMessage = "登入失敗";
           break;
         case "INVALID_FORMDATA":
-          alert("表單格式錯誤");
+          showMessage = "表單格式錯誤";
           break;
         case "WRONG_PASSWORD":
-          alert("密碼錯誤");
+          showMessage = "密碼錯誤";
           break;
         case "NO_PERMISSION":
           commit("logout");
-          alert("帳號無效");
+          showMessage = "帳號無效";
           break;
         case "INVALID_TOKEN":
           commit("logout");
-          alert("帳號無效");
+          showMessage = "帳號無效";
           break;
         case "UNKNOWN_USER":
-          alert("未知的使用者");
+          showMessage = "未知的使用者";
           break;
         case "TOKEN_EXPIRED":
           commit("logout");
-          alert("請重新登入");
+          showMessage = "請重新登入";
           break;
+      }
+      if (showMessage) {
+        this._vm.$swal.fire({
+          icon: "error",
+          title: showMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     },
   },

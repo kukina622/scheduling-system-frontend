@@ -40,7 +40,7 @@ export default {
           await this.$store.dispatch("getAllUserShiftTime");
           await this.$store.dispatch("getAllShiftData");
         } catch (err) {
-          this.$store.dispatch("errorHandler", err);
+          this.$store.commit("logout");
         }
       }
     },
@@ -58,3 +58,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.swal2-container {
+  font-family: "微軟正黑體";
+}
+</style>

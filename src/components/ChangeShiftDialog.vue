@@ -281,7 +281,12 @@ export default {
         apiChangeShift(this.sid, data)
           .then(async () => {
             await this.$store.dispatch("getAllShiftData");
-            alert("換班成功");
+            this.$swal.fire({
+              icon: "success",
+              title: "換班成功",
+              showConfirmButton: false,
+              timer: 1000,
+            });
           })
           .catch((err) => {
             this.$store.dispatch("errorHandler", err);
@@ -304,7 +309,12 @@ export default {
       };
       apiDeleteShift(this.sid, data)
         .then(async () => {
-          alert("刪除成功");
+          this.$swal.fire({
+            icon: "success",
+            title: "刪除成功",
+            showConfirmButton: false,
+            timer: 1000,
+          });
           await this.$store.dispatch("getAllShiftData");
         })
         .catch((err) => {
