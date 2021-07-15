@@ -40,7 +40,13 @@ export default {
           await this.$store.dispatch("getAllUserShiftTime");
           await this.$store.dispatch("getAllShiftData");
         } catch (err) {
-          this.$store.commit("logout");
+          let errMessage = err.response.data.message;
+          // 當token過期
+          if (errMessage === "TOKEN_EXPIRED") {
+            this.$store.commit("logout");
+          } else {
+            this.$store.dispatch("errorHandler", err);
+          }
         }
       }
     },
