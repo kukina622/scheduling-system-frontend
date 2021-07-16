@@ -5,6 +5,7 @@ import Login from "@/views/Login";
 import Calendar from "@/views/Calendar";
 import UserInfo from "@/views/UserInfo";
 import Register from "@/views/Register";
+import Table from "@/views/Table";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     path: "/userinfo",
     name: "userinfo",
     component: UserInfo,
+  },
+  {
+    path: "/table",
+    name: "table",
+    component: Table,
   },
 ];
 

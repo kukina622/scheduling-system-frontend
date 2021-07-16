@@ -30,9 +30,10 @@ export default {
       img_dark: require("@/assets/Yunnet-dark.svg"),
       drawerShow: false,
       drawerList: [
-        { name: "calendar", title: "班表", isLogin: false, isAdmin: false },
+        { name: "calendar", title: "行事曆", isLogin: false, isAdmin: false },
         { name: "userinfo", title: "個人頁面", isLogin: true, isAdmin: false },
-        { name: "login", title: "後台", isLogin: true, isAdmin: true },
+        { name: "table", title: "班表", isLogin: true, isAdmin: false },
+        // { name: "", title: "後台", isLogin: true, isAdmin: true },
       ],
     };
   },

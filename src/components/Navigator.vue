@@ -81,6 +81,7 @@ export default {
     },
     logout() {
       this.$store.commit("logout");
+      this.$router.push({ name: "calendar" }).catch(() => {});
       this.$swal.fire({
         icon: "success",
         title: "已登出",
