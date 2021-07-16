@@ -304,7 +304,7 @@ export default {
     deleteShift(shiftData) {
       let data = {
         orginalDate: shiftData.orginalDate.replaceAll("/", "-"),
-        target: shiftData.target,
+        target: this.findSidByUsername(shiftData.target),
         shiftDate: shiftData.shiftDate.replaceAll("/", "-"),
       };
       apiDeleteShift(this.sid, data)
